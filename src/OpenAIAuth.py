@@ -3,7 +3,7 @@ import re
 import urllib
 
 import requests
-
+from loguru import logger
 
 class Error(Exception):
     """
@@ -54,6 +54,7 @@ class Authenticator:
         """
         return urllib.parse.quote(string)
 
+    @logger.catch
     def begin(self) -> None:
         """
         In part two, We make a request to https://chat.openai.com/api/auth/csrf and grab a fresh csrf token
@@ -82,7 +83,7 @@ class Authenticator:
                 status_code=response.status_code,
                 details=response.text,
             )
-            print(error.details)
+            logger.error(error.details)
             raise error
 
     def __part_one(self, token: str) -> None:
