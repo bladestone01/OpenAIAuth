@@ -83,6 +83,8 @@ class Authenticator:
                 status_code=response.status_code,
                 details=response.text,
             )
+            logger.info(response.content)
+            logger.info("===================================>")
             logger.error(error.details)
             raise error
 
