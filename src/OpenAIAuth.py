@@ -73,6 +73,8 @@ class Authenticator:
             url=url,
             headers=headers,
         )
+        logger.info("encoding:{}, apparent encoding:{}", response.encoding, response.apparent_encoding)
+        response.encoding = response.apparent_encoding
         if response.status_code == 200 and "json" in response.headers["Content-Type"]:
             csrf_token = response.json()["csrfToken"]
             # self.session.cookies.set("__Host-next-auth.csrf-token", csrf_token)
@@ -83,7 +85,7 @@ class Authenticator:
                 status_code=response.status_code,
                 details=response.text,
             )
-            logger.info(response.content)
+            logger.info(response.apparent_encoding)
             logger.info("===================================>")
             logger.error(error.details)
             raise error
